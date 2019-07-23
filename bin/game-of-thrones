@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+require './lib/Game_Of_Thrones'
+
+GameOfThrones::CLI.new.call
