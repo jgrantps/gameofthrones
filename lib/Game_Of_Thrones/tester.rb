@@ -1,2 +1,0 @@
-class Bozoz
-end
