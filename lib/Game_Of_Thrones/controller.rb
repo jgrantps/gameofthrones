@@ -70,7 +70,7 @@ class GameOfThrones::Controller
   end
 
   def self.selector(index)
-    indexed_hash[index]
+    url = indexed_hash[index]
+    GameOfThrones::Categories.new(url)
   end
-
 end
