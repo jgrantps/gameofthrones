@@ -1,38 +1,20 @@
 class GameOfThrones::Controller
- #=> Category class will scrape the top tier of the website and return a list of options.
-  #=> listed options will be 1..4 and will be include the titles of the options.  ie "1. One Piece Toilets"
-  #=> user input will be of the number, and will then load the indexed URL that is keyed to the title into the subcategory_scraper.
-
   @@h = {}
-  @@category_urls = nil
-  @@category_titles = nil
   def self.category_scraper             #=> scrapes for two components of the toilet categories: title and URL.
     site = "https://www.us.kohler.com/us/toilets/article/CNT125900002.htm"
     page = Nokogiri::HTML(open(site))
     products = page.css("div.col-6-lg.col-6-md.col-12-sm.main-text-content")
-    @@category_urls = products.collect {|t| "https://www.us.kohler.com"+t.css("a").attr("href").value}
-    @@category_titles = products.collect { |t| t.css("div.main-text-content h3").text}
-    bob = @@category_titles.zip(@@category_urls)
-    category_urls
-    category_titles
-    hash
-    hash_array
-    indexed_hash
-    title_hash
-    subselection
+
+    products.each do |t|
+      GameOfThrones::Categories.new(t.css("div.main-text-content h3").text, "https://www.us.kohler.com"+t.css("a").attr("href").value)
     end
 
+    binding.pry
+  end
 
 
-  def self.category_urls
-    @@category_urls
-  end
-  def self.category_titles
-    @@category_titles
-  end
-  def self.hash
-    @@h
-  end
+
+
   def self.hash_array
     @@category_titles.zip(@@category_urls)
   end
@@ -73,7 +55,7 @@ class GameOfThrones::Controller
   def self.selector(index)
     url = indexed_hash[index]
     name = title_hash_invert[url]
-    GameOfThrones::Categories.new(url, name)
+
   end
 
   def self.make_selection

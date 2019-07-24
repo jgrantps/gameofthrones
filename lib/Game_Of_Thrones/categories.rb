@@ -1,8 +1,9 @@
 class GameOfThrones::Categories
   attr_accessor :name, :url
 
-
-   def initialize(url = "", name = "")
+@@all = []
+   def initialize(mame, url)
+     @@all<<self
      @subpage = ""
      @subcategories = ""
      @subhash = {}
@@ -11,6 +12,10 @@ class GameOfThrones::Categories
 
     subcategory_scraper
     #  subcategory_list
+   end
+
+   def self.all
+     @@all
    end
 
    def subcategory_scraper
