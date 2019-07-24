@@ -22,6 +22,8 @@ class GameOfThrones::Controller
     subselection
     end
 
+
+
   def self.category_urls
     @@category_urls
   end
