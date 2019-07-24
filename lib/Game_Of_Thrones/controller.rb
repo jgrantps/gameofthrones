@@ -23,8 +23,10 @@ class GameOfThrones::Controller
     GameOfThrones::Categories.all.each do |category|
       puts "#{category.index}. #{category.name}"
     end
-    binding.pry
-    @menu_selection = gets.strip.to_i
+    input = gets.strip.to_i
+     binding.pry
+
+    GameOfThrones::Categories.all.detect {|category| category.index == input }
     selector(@menu_selection)
   end
 
