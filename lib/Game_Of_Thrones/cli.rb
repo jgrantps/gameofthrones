@@ -13,7 +13,7 @@ You can read more details about the thrones in each category by simply entering 
 Make your guess by entering 'guess ##' to see if you were correct.\n\n
   DOC
 
-GameOfThrones::Controller.category_scraper
+GameOfThrones::Controller.program_start
 end
 
 end

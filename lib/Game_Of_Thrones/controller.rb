@@ -1,5 +1,11 @@
 class GameOfThrones::Controller
 
+  def self.program_start
+    category_scraper
+    make_selection
+  end
+
+
   def self.category_scraper             #=> scrapes for two components of the toilet categories: title and URL.
     site = "https://www.us.kohler.com/us/toilets/article/CNT125900002.htm"
     page = Nokogiri::HTML(open(site))
@@ -9,17 +15,17 @@ class GameOfThrones::Controller
       GameOfThrones::Categories.new(t.css("div.main-text-content h3").text, "https://www.us.kohler.com"+t.css("a").attr("href").value, count)
       count += 1
     end
-    binding.pry
+    # binding.pry
   end
 
-  # def self.selector(index)
-  #   url = indexed_hash[index]
-  #   name = title_hash_invert[url]
-  # end
-  #
-  # def self.make_selection
-  #   @menu_selection = gets.strip.to_i
-  #   selector(@menu_selection)
-  # end
+  def self.make_selection
+    puts "make a selection of which category you'd like to explore:"
+    GameOfThrones::Categories.all.each do |category|
+      puts "#{category.index}. #{category.name}"
+    end
+    binding.pry
+    @menu_selection = gets.strip.to_i
+    selector(@menu_selection)
+  end
 
 end

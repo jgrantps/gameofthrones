@@ -1,5 +1,5 @@
 class GameOfThrones::Categories
-  attr_accessor :name, :url
+  attr_accessor :name, :url, :index
 
 @@all = []
    def initialize(name, url, index)
