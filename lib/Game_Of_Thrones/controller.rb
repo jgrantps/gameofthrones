@@ -47,10 +47,14 @@ class GameOfThrones::Controller
 
   def self.title_hash #=> returns the hash with the key: Value pairs as Title: URL
     category_titles.zip(category_urls).map do |i|
-     hash[i[0]] = i[1]
+      hash[i[0]] = i[1]
     end
     hash
   end #=> returns the hash with the key: Value pairs as title: URL
+
+  def self.title_hash_invert
+    title_hash.invert
+  end
 
   def self.subselection #=> returns the list of categories to choose from.
     title_hash
@@ -64,13 +68,15 @@ class GameOfThrones::Controller
     make_selection
   end
 
+  def self.selector(index)
+    url = indexed_hash[index]
+    name = title_hash_invert[url]
+    GameOfThrones::Categories.new(url, name)
+  end
+
   def self.make_selection
     @menu_selection = gets.strip.to_i
     selector(@menu_selection)
   end
 
-  def self.selector(index)
-    url = indexed_hash[index]
-    GameOfThrones::Categories.new(url)
-  end
 end
