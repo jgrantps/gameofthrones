@@ -1,7 +1,10 @@
-class GameOfThrones::SubCategories
-  attr_accessor :url
-  def initialize(url)
+class GameOfThrones::Thrones
+  attr_accessor :name, :price, :url, :index
+  def initialize(name, price, url, index)
+    @name = name
+    @price = price
     @url = url
+    @index = index
     puts "hello from subcategories"
     puts "this is from categories #{url}"
     toilet_scraper

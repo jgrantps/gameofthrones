@@ -5,8 +5,9 @@ class GameOfThrones::Controller
     make_selection
   end
 
-
-  def self.category_scraper             #=> scrapes for two components of the toilet categories: title and URL.
+#=> scrapes for two components of the toilet categories: title and URL.
+#=> returns a new category object with thrones array = nil.
+  def self.category_scraper
     site = "https://www.us.kohler.com/us/toilets/article/CNT125900002.htm"
     page = Nokogiri::HTML(open(site))
     products = page.css("div.col-6-lg.col-6-md.col-12-sm.main-text-content")
@@ -15,7 +16,7 @@ class GameOfThrones::Controller
       GameOfThrones::Categories.new(t.css("div.main-text-content h3").text, "https://www.us.kohler.com"+t.css("a").attr("href").value, count)
       count += 1
     end
-    # binding.pry
+
   end
 
   def self.make_selection
@@ -24,10 +25,12 @@ class GameOfThrones::Controller
       puts "#{category.index}. #{category.name}"
     end
     input = gets.strip.to_i
-     binding.pry
 
-    GameOfThrones::Categories.all.detect {|category| category.index == input }
-    selector(@menu_selection)
+  category = GameOfThrones::Categories.all.detect {|category| category.index == input }
+  GameOfThrones::Categories.thrones_scraper(category.url)
+    binding.pry
   end
+
+
 
 end
