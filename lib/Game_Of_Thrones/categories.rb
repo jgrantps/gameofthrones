@@ -1,9 +1,8 @@
 class GameOfThrones::Categories
-  attr_accessor :name, :url, :index, :thrones, :toilets
+  attr_accessor :name, :url, :index, :toilets
 
 @@all = []
    def initialize(name, url, index)
-     @thrones = thrones
      @url = url
      @name = name
      @index = index
@@ -16,96 +15,44 @@ class GameOfThrones::Categories
    end
 
    def thrones_scraper
-
+#=> scrape the category for its corresponding toilets.
      subpage = Nokogiri::HTML(open(@url))
      subproducts = subpage.css("div.col-4-lg.col-6-md.col-6-sm.product-panel.product-panel-height-new")
       count = 1
-      subproducts.each do |t| #=> repair for creating individual toilets.
+#=> instantiates individual toilets that belong to the category.
+      subproducts.each do |t|
         GameOfThrones::Thrones.new(t.css("p.product-panel__summary.product-panel__summary-new").text, t.css("p.product-panel__price.product-panel__price-new.light-gray--sku--price").text.gsub("Starting at ","").strip, "https://www.us.kohler.com"+t.css("a").attr("href").value.gsub("s.jsp?productId=","/toilets/").gsub("?",".htm?"), count, self)
-         binding.pry
         count += 1
       end
-
-     binding.pry
-    # guess
-   end
-
-   def toilet_url
-     @toilet_url
-   end
-
-   def toilet_names
-     @toilet_names
-   end
-
-   def toilet_price
-     @toilet_prices
-   end
-
-   def name_price_hash #=> returns hash in the form of [name => price]
-     hash = {}
-     toilet_names.zip(toilet_price).map do |i|
-       hash[i[0]] = i[1]
-     end
-     binding.pry
-   end
-
-   def index_url_hash #=> returns hash in the form of [index => URL]
-     hash = {}
-     count = 1
-     toilet_names.zip(toilet_url).map do |i|
-       hash[count] = i[1]
-       count +=1
-     end
-    # binding.pry
-     hash
-   end
-
-   def title_url_hash #=> returns hash in the form of [title => URL]
-     hash = {}
-     toilet_names.zip(toilet_url).map do |i|
-       hash[i[0]] = i[1]
-     end
-    #  binding.pry
-     hash
-   end
-
-   def index_title_hash #=> returns hash in the form of [index => title]
-     hash = {}
-     count = 1
-     toilet_url.zip(toilet_names).map do |i|
-       hash[count] = i[1]
-       count +=1
-     end
-    #  binding.pry
-     hash
    end
 
    def guess
      puts "\nTo guess which throne you think is the most expensive, enter the # followed by a '?'\n\n"
      puts "To find out more info on each throne, enter the # followed by a '!'\n\n"
     guess_display
+    binding.pry
     input = gets.strip
-    guess_check(input)
-    end
+    # guess_check(input)
+  end
 
    def guess_display #=> returns the list of toilets to choose from.
-     index_title_hash.each do |key, value|
-       puts "#{key}. #{value}."
+     self.toilets.sample(3).each do |toilet|
+       puts "#{toilet.index}. #{toilet.name}, #{toilet.price}"
      end
+    #  binding.pry
   end
 
-  def guess_check(var) #=> checks the input/var against the list and returns correct/incorrect.
-    #if var == #the top price in the name_price_hash
-      if var.split("").last == "!"
-        GameOfThrones::SubCategories.new(url)
-        puts "you entered in #{var} with an exclamation point"
-      elsif var.split("").last == "?"
-        puts "you entered in #{var} with a question mark"
-      else
-        puts "you entered a typ - try again!"
-      guess
-      end
-  end
+  # def guess_check(var) #=> checks the input/var against the list and returns correct/incorrect.
+  #   #if var == #the top price in the name_price_hash
+  #     if var.split("").last == "!"
+  #       GameOfThrones::SubCategories.new(url)
+  #       puts "you entered in #{var} with an exclamation point"
+  #     elsif var.split("").last == "?"
+  #       puts "you entered in #{var} with a question mark"
+  #     else
+  #       puts "you entered a typ - try again!"
+  #     guess
+  #     end
+  # end
 
 end

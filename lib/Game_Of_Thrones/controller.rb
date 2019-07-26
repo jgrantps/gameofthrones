@@ -31,7 +31,7 @@ class GameOfThrones::Controller
 
 
   category.thrones_scraper
-
+  category.guess
   end
 
 
