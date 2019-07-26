@@ -1,17 +1,22 @@
 class GameOfThrones::Thrones
   attr_accessor :name, :price, :url, :index
+  @@all = []
   def initialize(name, price, url, index)
     @name = name
     @price = price
     @url = url
     @index = index
+    @@all<<self
     puts "hello from subcategories"
     puts "this is from categories #{url}"
-    toilet_scraper
+    #toilet_scraper
+  end
+
+  def self.all
+    @@all
   end
 
   def toilet_scraper
-    @toilet_url = []
     product = Nokogiri::HTML(open(@url))
     details = product.css("div.product-detail__specs-container.col-8-md.pad-r-15-sm pad-r-40-md")
     overview = product.css("product-detail__name-and-description product-detail__name.pd-name").text

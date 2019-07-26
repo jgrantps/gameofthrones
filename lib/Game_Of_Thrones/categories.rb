@@ -15,21 +15,20 @@ class GameOfThrones::Categories
    end
 
    def thrones_scraper
-     @toilet_url = []
+
      subpage = Nokogiri::HTML(open(@url))
      subproducts = subpage.css("div.col-4-lg.col-6-md.col-6-sm.product-panel.product-panel-height-new")
-    #  count = 1
-    #  subproducts.each do |t| #=> repair for creating individual toilets.
-    #    binding.pry
-    #    GameOfThrones::Thrones.new(@toilet_names, @toilet_prices, @toilet_url, count)
-    #    count += 1
-    #  end
-     @toilet_url = subproducts.collect {|t| "https://www.us.kohler.com"+t.css("a").attr("href").value.gsub("s.jsp?productId=","/toilets/").gsub("?",".htm?")}
-     @toilet_names = subproducts.collect {|t| t.css("p.product-panel__summary.product-panel__summary-new").text}
-     @toilet_prices = subproducts.collect {|t| t.css("p.product-panel__price.product-panel__price-new.light-gray--sku--price").text.gsub("Starting at ","").strip}
-     binding.pry
+     #toilet_link = "https://www.us.kohler.com"+t.css("a").attr("href").value.gsub("s.jsp?productId=","/toilets/").gsub("?",".htm?")
+     #toilet_name = t.css("p.product-panel__summary.product-panel__summary-new").text
+     #toilet_price = t.css("p.product-panel__price.product-panel__price-new.light-gray--sku--price").text.gsub("Starting at ","").strip
+      count = 1
+      subproducts.each do |t| #=> repair for creating individual toilets.
+        GameOfThrones::Thrones.new(t.css("p.product-panel__summary.product-panel__summary-new").text, t.css("p.product-panel__price.product-panel__price-new.light-gray--sku--price").text.gsub("Starting at ","").strip, "https://www.us.kohler.com"+t.css("a").attr("href").value.gsub("s.jsp?productId=","/toilets/").gsub("?",".htm?"), count)
+        # binding.pry
+        count += 1
+      end
 
-    #  binding.pry
+     binding.pry
     # guess
    end
 
