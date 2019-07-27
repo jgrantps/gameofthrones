@@ -41,8 +41,8 @@ class GameOfThrones::Controller
      end
   end
 
+#=> scrapes for toilets if toilet attribute is empty.  Returns toilet attribute if not empty.
   def category_check(var)
-    binding.pry
     if var.toilets == []
       var.thrones_scraper
       var.guess

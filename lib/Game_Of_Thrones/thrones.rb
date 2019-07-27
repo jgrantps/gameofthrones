@@ -4,6 +4,7 @@ class GameOfThrones::Thrones
   def initialize(name, price, url, index, category)
     @name = name
     @price = price
+    @price_i = price.gsub("$", "").gsub(",", "").to_i
     @url = url
     @index = index
     @category = category

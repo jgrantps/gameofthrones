@@ -7,6 +7,7 @@ class GameOfThrones::Categories
      @name = name
      @index = index
      @toilets = []
+     @displayed_index = []
      @@all<<self
    end
 
@@ -26,32 +27,36 @@ class GameOfThrones::Categories
       end
    end
 
-   def guess
-     puts "\nTo guess which throne you think is the most expensive, enter the # followed by a '?'\n\n"
-     puts "To find out more info on each throne, enter the # followed by a '!'\n\n"
-    guess_display
+   def guess #=> Prompts user for selection
+     puts "\n--> To guess which throne you think is the most expensive, enter the # followed by a '!'"
+     puts "--> To find out more info on each throne, enter the # followed by a '?'\n\n"
+    guess_display #=> displays toilet table for user to make an decision over.
     input = gets.strip
-    # guess_check(input)
+    input_check(input) #=> returns response based on if there is request for more details, a guess is made, or input is an error.
   end
 
-   def guess_display #=> returns the list of toilets to choose from.
+   def guess_display #=> returns the list of 3 random toilets to choose from.
+
      self.toilets.sample(3).each do |toilet|
-       puts "#{toilet.index}. #{toilet.name}, #{toilet.price}"
+       puts "   #{toilet.index}. #{toilet.name}, #{toilet.price}"
+       @displayed_index << toilet.index.to_s
      end
-    #  binding.pry
+binding.pry
   end
 
-  # def guess_check(var) #=> checks the input/var against the list and returns correct/incorrect.
-  #   #if var == #the top price in the name_price_hash
-  #     if var.split("").last == "!"
-  #       GameOfThrones::SubCategories.new(url)
-  #       puts "you entered in #{var} with an exclamation point"
-  #     elsif var.split("").last == "?"
-  #       puts "you entered in #{var} with a question mark"
-  #     else
-  #       puts "you entered a typ - try again!"
-  #     guess
-  #     end
-  # end
+  def input_check(var) #=> routes the program to the appropriate method based on the var argument.
+    #if var == #the top price in the name_price_hash
+      if @displayed_index.include? var.split("").first #=> checks if the input number is a match for any toilet index in the guess_display.
+        puts "Your input is valid!"
+       if var.split("").last == "!"
+      #   GameOfThrones::SubCategories.new(url)
+      #   puts "you entered in #{var} with an exclamation point"
+      # elsif var.split("").last == "?"
+      #   puts "you entered in #{var} with a question mark"
+      else
+        puts "you entered a typo - try again!"
+      guess
+      end
+  end
 
 end
