@@ -20,20 +20,35 @@ class GameOfThrones::Controller
   end
 
   def make_selection
-
-    puts "make a selection of which category you'd like to explore:"
-    GameOfThrones::Categories.all.each do |category|
+    puts "Make a selection of which category you'd like to explore:\n\n"
+  #=> puts out a list of all the categories.
+    GameOfThrones::Categories.all[0..3].each do |category|
       puts "#{category.index}. #{category.name}"
     end
-    input = gets.strip.to_i
+  #=> receives chosen index number from user.
+    input = gets.strip
+  #=> checks to confirm if the entry was valid.
+     if ["1","2","3","4"].include? input
+      category = GameOfThrones::Categories.all.detect {|category| category.index == input.to_i }
 
-  category = GameOfThrones::Categories.all.detect {|category| category.index == input }
-
-
-  category.thrones_scraper
-  category.guess
+      puts "You have selected:\n  #{category.name}"
+      category_check(category)
+      # category.thrones_scraper
+      # category.guess
+     else
+      puts "\n******************\nYou have entered an error!  Please choose again. \n\n"
+      make_selection
+     end
   end
 
-
+  def category_check(var)
+    binding.pry
+    if var.toilets == []
+      var.thrones_scraper
+      var.guess
+    else
+      var.guess
+    end
+  end
 
 end

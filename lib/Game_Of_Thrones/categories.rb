@@ -30,7 +30,6 @@ class GameOfThrones::Categories
      puts "\nTo guess which throne you think is the most expensive, enter the # followed by a '?'\n\n"
      puts "To find out more info on each throne, enter the # followed by a '!'\n\n"
     guess_display
-    binding.pry
     input = gets.strip
     # guess_check(input)
   end
