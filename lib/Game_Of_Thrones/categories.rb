@@ -47,14 +47,10 @@ class GameOfThrones::Categories
   def input_check #=> routes the program to the appropriate method based on the var argument.
     var = gets.strip
 
-    a = @displayed_toilets.map {|i| i.index.to_s }.include? var.split("").first
+    a = @displayed_toilets.map {|i| i.index.to_s }.include? var.split(/[?!]/).first
     b = (var.split("").last == "!")
     c = (var.split("").last == "?")
-
-      # if (@displayed_toilets.map {|i| i.index.to_s }.include? var.split("").first && ((var.split("").last == "!") || (var.split("").last == "?")) == true)#=> checks if the input number is a match for any toilet index in the guess_display.
       if a && (b || c) == true
-        # binding.pry
-
         puts "Your input is valid!"
       #  if var.split("").last == "!" #=> returns responese for if the user makes a guess.
       #    #=> returns the toilet.index, name, and price for the toilet seleted.
