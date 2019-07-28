@@ -64,16 +64,44 @@ class GameOfThrones::Categories
 
   def info_lookup(input)
     selected_index = input.gsub("?","").to_i
-  throne =   @displayed_toilets.detect { |toilet| toilet.index == selected_index}
+    throne =   @displayed_toilets.detect { |toilet| toilet.index == selected_index}
 
-  puts "Name: #{throne.name}"
-  puts "Category: #{throne.category.name}"
-  puts "Price: #{throne.price}"
-  puts "Website: #{throne.url}"
+    puts "\nName: #{throne.name}"
+    puts "Category: #{throne.category.name}"
+    puts "Price: #{throne.price}"
+        puts "Price: #{throne.price_i}"
+    puts "Website: #{throne.url}\n"
 
-  binding.pry
+    input_check
+  end
 
-    toilet.index
+  def game_check(input)
+
+    selected_price = input.gsub("?","").to_i
+    sorted = @displayed_toilets.map { |throne|  throne.price_i }.sort {|a,b| b <=> a }
+binding.pry
+    if selected_price == sorted.first
+      puts "Congratulations!  You answered correctly."
+      play_again
+    else
+      puts "Wrong!  Try again."
+      input_check
+    # binding.pry
+    end
+  end
+
+
+  def play_again
+    puts "Would you like to play again? y/n"
+    choice = gets.strip
+    if choice == "n"
+      puts "Thanks for playing and have a great day!"
+    elsif choice == "y"
+      make_selection
+    else
+      puts "please type in 'y' or 'n' to make your selection."
+      play_again
+    end
   end
 
 
