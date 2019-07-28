@@ -10,6 +10,7 @@ class GameOfThrones::Controller
     make_selection
   end
 
+
 #=> scrapes for two components of the toilet categories: title and URL.
 #=> returns a new category object with thrones array = nil.
   def category_scraper

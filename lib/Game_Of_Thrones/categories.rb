@@ -102,12 +102,13 @@ class GameOfThrones::Categories
     puts "Would you like to play again? y/n"
     choice = gets.strip
     if choice == "n"
-      return "Thanks for playing and have a great day!"
+      puts "Thanks for playing and have a great day!"
     elsif choice == "y"
-      binding.pry
-      GameOfThrones::Controller.make_selection
+      # binding.pry
+      @displayed_toilets = []
+      GameOfThrones::Controller.new.make_selection
     else
-      binding.pry
+      # binding.pry
       puts "please type in 'y' or 'n' to make your selection."
       play_again
     end
