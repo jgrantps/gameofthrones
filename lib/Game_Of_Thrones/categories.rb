@@ -28,7 +28,7 @@ class GameOfThrones::Categories
    end
 
    def guess #=> Prompts user for selection
-     puts "\n--> To guess which throne you think is the most expensive, enter the # followed by a '!'"
+     puts "\n-->  Guess which throne you think is the most expensive by entering the corresponding index number."
      puts "--> To find out more info on each throne, enter the # followed by a '?'\n\n"
     selection_generator #=> displays toilet table for user to make an decision over.
     # input = gets.strip
@@ -46,20 +46,35 @@ class GameOfThrones::Categories
 
   def input_check #=> routes the program to the appropriate method based on the var argument.
     var = gets.strip
-
-    a = @displayed_toilets.map {|i| i.index.to_s }.include? var.split(/[?!]/).first
-    b = (var.split("").last == "!")
+    a = @displayed_toilets.map {|i| i.index.to_s }.include? var.split(/[?]/).first
+    b = @displayed_toilets.map {|i| i.index.to_s.split("").last }.include? var.split("").last
     c = (var.split("").last == "?")
-      if a && (b || c) == true
+      if a && (b || c)
         puts "Your input is valid!"
-      #  if var.split("").last == "!" #=> returns responese for if the user makes a guess.
-      #    #=> returns the toilet.index, name, and price for the toilet seleted.
-      #  if var.split("").last == "?" #=> returns response ofr if the user asks for more information.
-      #    #=> checks to see whether the toilet selected in the input is the most expensive.
+         if var.split("").last == "?"
+           info_lookup(var) #=> returns name, price, and url for the toilet.
+         else
+           game_check(var) #=> compares the input 'var' against the @displayed_toilets to see if it was the most expensive.
+         end
       else #=> returns error message and prompts user to retry.
-        # binding.pry
         puts "you entered a typo - try again!"
         input_check
       end
   end
+
+  def info_lookup(input)
+    selected_index = input.gsub("?","").to_i
+  throne =   @displayed_toilets.detect { |toilet| toilet.index == selected_index}
+
+  puts "Name: #{throne.name}"
+  puts "Category: #{throne.category.name}"
+  puts "Price: #{throne.price}"
+  puts "Website: #{throne.url}"
+
+  binding.pry
+
+    toilet.index
+  end
+
+
 end
