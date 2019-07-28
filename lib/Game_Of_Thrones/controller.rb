@@ -1,6 +1,11 @@
 class GameOfThrones::Controller
 
+  def initialize
+
+  end
+
   def start
+
     category_scraper #=> returns set of catgory objects.
     make_selection
   end
@@ -12,10 +17,13 @@ class GameOfThrones::Controller
     page = Nokogiri::HTML(open(site))
     products = page.css("div.col-6-lg.col-6-md.col-12-sm.main-text-content")
     count = 1
-    products.each do |t|
-      GameOfThrones::Categories.new(t.css("div.main-text-content h3").text, "https://www.us.kohler.com"+t.css("a").attr("href").value, count)
-      count += 1
-    end
+     if GameOfThrones::Categories.all == []
+      products.each do |t|
+        GameOfThrones::Categories.new(t.css("div.main-text-content h3").text, "https://www.us.kohler.com"+t.css("a").attr("href").value, count)
+        count += 1
+     end
+  end
+  # binding.pry
 
   end
 

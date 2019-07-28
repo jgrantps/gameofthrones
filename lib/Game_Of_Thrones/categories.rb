@@ -21,10 +21,14 @@ class GameOfThrones::Categories
      subproducts = subpage.css("div.col-4-lg.col-6-md.col-6-sm.product-panel.product-panel-height-new")
       count = 1
 #=> instantiates individual toilets that belong to the category.
+    if self.toilets == []
+
       subproducts.each do |t|
         GameOfThrones::Thrones.new(t.css("p.product-panel__summary.product-panel__summary-new").text, t.css("p.product-panel__price.product-panel__price-new.light-gray--sku--price").text.gsub("Starting at ","").strip, "https://www.us.kohler.com"+t.css("a").attr("href").value.gsub("s.jsp?productId=","/toilets/").gsub("?",".htm?"), count, self)
         count += 1
       end
+    end
+      # binding.pry
    end
 
    def guess #=> Prompts user for selection
@@ -45,16 +49,21 @@ class GameOfThrones::Categories
   end
 
   def input_check #=> routes the program to the appropriate method based on the var argument.
-    var = gets.strip
-    a = @displayed_toilets.map {|i| i.index.to_s }.include? var.split(/[?]/).first
-    b = @displayed_toilets.map {|i| i.index.to_s.split("").last }.include? var.split("").last
-    c = (var.split("").last == "?")
+    input = gets.strip
+    throne =   @displayed_toilets.detect { |toilet| toilet.index == (input.gsub("?","").to_i)}
+
+
+
+
+    a = @displayed_toilets.map {|i| i.index.to_s }.include? input.split(/[?]/).first
+    b = @displayed_toilets.map {|i| i.index.to_s.split("").last }.include? input.split("").last
+    c = (input.split("").last == "?")
       if a && (b || c)
         puts "Your input is valid!"
-         if var.split("").last == "?"
-           info_lookup(var) #=> returns name, price, and url for the toilet.
+         if input.split("").last == "?"
+           info_lookup(throne) #=> returns name, price, and url for the toilet.
          else
-           game_check(var) #=> compares the input 'var' against the @displayed_toilets to see if it was the most expensive.
+           game_check(throne) #=> compares the input 'var' against the @displayed_toilets to see if it was the most expensive.
          end
       else #=> returns error message and prompts user to retry.
         puts "you entered a typo - try again!"
@@ -62,9 +71,9 @@ class GameOfThrones::Categories
       end
   end
 
-  def info_lookup(input)
-    selected_index = input.gsub("?","").to_i
-    throne =   @displayed_toilets.detect { |toilet| toilet.index == selected_index}
+  def info_lookup(throne)
+    # selected_index = input.gsub("?","").to_i
+    # throne =   @displayed_toilets.detect { |toilet| toilet.index == selected_index}
 
     puts "\nName: #{throne.name}"
     puts "Category: #{throne.category.name}"
@@ -75,12 +84,10 @@ class GameOfThrones::Categories
     input_check
   end
 
-  def game_check(input)
-
-    selected_price = input.gsub("?","").to_i
-    sorted = @displayed_toilets.map { |throne|  throne.price_i }.sort {|a,b| b <=> a }
-binding.pry
-    if selected_price == sorted.first
+  def game_check(throne)
+    sorted = @displayed_toilets.map { |t|  t.price_i }.sort {|a,b| b <=> a }
+# binding.pry
+    if throne.price_i == sorted.first
       puts "Congratulations!  You answered correctly."
       play_again
     else
@@ -95,10 +102,12 @@ binding.pry
     puts "Would you like to play again? y/n"
     choice = gets.strip
     if choice == "n"
-      puts "Thanks for playing and have a great day!"
+      return "Thanks for playing and have a great day!"
     elsif choice == "y"
-      make_selection
+      binding.pry
+      GameOfThrones::Controller.make_selection
     else
+      binding.pry
       puts "please type in 'y' or 'n' to make your selection."
       play_again
     end
