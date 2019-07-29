@@ -33,7 +33,7 @@ class GameOfThrones::Categories
 
    def guess #=> Prompts user for selection
      puts "\n-->  Guess which throne you think is the most expensive by entering the corresponding index number."
-     puts "--> To find out more info on each throne, enter the # followed by a '?'\n\n"
+     puts "--> To find out more info on each throne, enter the index number followed by a '?'\n\n"
     selection_generator #=> displays toilet table for user to make an decision over.
     # input = gets.strip
     input_check #=> returns response based on if there is request for more details, a guess is made, or input is an error.
@@ -42,7 +42,7 @@ class GameOfThrones::Categories
    def selection_generator #=> returns the list of 3 random toilets to choose from.
 
      self.toilets.sample(3).each do |toilet|
-       puts "   #{toilet.index}. #{toilet.name}, #{toilet.price}"
+       puts "   #{toilet.index}. #{toilet.name}"
        @displayed_toilets << toilet #=> stores the generated selection in a dedicated array.
      end
 # binding.pry
@@ -59,7 +59,6 @@ class GameOfThrones::Categories
     b = @displayed_toilets.map {|i| i.index.to_s.split("").last }.include? input.split("").last
     c = (input.split("").last == "?")
       if a && (b || c)
-        puts "Your input is valid!"
          if input.split("").last == "?"
            info_lookup(throne) #=> returns name, price, and url for the toilet.
          else
@@ -75,11 +74,10 @@ class GameOfThrones::Categories
     # selected_index = input.gsub("?","").to_i
     # throne =   @displayed_toilets.detect { |toilet| toilet.index == selected_index}
 
-    puts "\nName: #{throne.name}"
-    puts "Category: #{throne.category.name}"
+    puts "\nCategory: #{throne.category.name}"
+    puts "Name: #{throne.name}"
     puts "Price: #{throne.price}"
-        puts "Price: #{throne.price_i}"
-    puts "Website: #{throne.url}\n"
+    puts "Website: #{throne.url}\n\n"
 
     input_check
   end
@@ -88,7 +86,7 @@ class GameOfThrones::Categories
     sorted = @displayed_toilets.map { |t|  t.price_i }.sort {|a,b| b <=> a }
 # binding.pry
     if throne.price_i == sorted.first
-      puts "Congratulations!  You answered correctly."
+      puts "\nCongratulations!  You answered correctly."
       play_again
     else
       puts "Wrong!  Try again."
