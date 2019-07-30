@@ -13,7 +13,7 @@ Good Luck!
 
 ## Installation
 
-clone or download the project from github at https://github.com/jgrantps/gameofthrones
+Clone or download the project from github at https://github.com/jgrantps/gameofthrones
 
 Once loaded on your machine, change directories to the senior parent directory of the program (/gameofthrones)
 
