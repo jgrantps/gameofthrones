@@ -1,123 +1,104 @@
 class GameOfThrones::Categories
-  attr_accessor :name, :url
+  attr_accessor :name, :url, :index, :toilets
 
-
-   def initialize(url = "", name = "")
-     @subpage = ""
-     @subcategories = ""
-     @subhash = {}
+@@all = []
+   def initialize(name, url, index)
      @url = url
      @name = name
-
-    subcategory_scraper
-    #  subcategory_list
+     @index = index
+     @toilets = []
+     @displayed_toilets = []
+     @@all<<self
    end
 
-   def subcategory_scraper
-     @toilet_url = []
+   def self.all
+     @@all
+   end
+
+   def thrones_scraper
+#=> scrapes the category for its corresponding toilets.
      subpage = Nokogiri::HTML(open(@url))
      subproducts = subpage.css("div.col-4-lg.col-6-md.col-6-sm.product-panel.product-panel-height-new")
-     @toilet_url = subproducts.collect {|t| "https://www.us.kohler.com"+t.css("a").attr("href").value.gsub("s.jsp?productId=","/toilets/").gsub("?",".htm?")}
-     @toilet_names = subproducts.collect {|t| t.css("p.product-panel__summary.product-panel__summary-new").text}
-     @toilet_prices = subproducts.collect {|t| t.css("p.product-panel__price.product-panel__price-new.light-gray--sku--price").text.gsub("Starting at ","").strip}
+      count = 1
+#=> instantiates individual toilets that belong to the category.
+    if self.toilets == []
 
-    #  binding.pry
-    guess
-   end
-
-   def toilet_url
-     @toilet_url
-   end
-
-   def toilet_names
-     @toilet_names
-   end
-
-   def toilet_price
-     @toilet_prices
-   end
-
-   def name_price_hash #=> returns hash in the form of [name => price]
-     hash = {}
-     toilet_names.zip(toilet_price).map do |i|
-       hash[i[0]] = i[1]
-     end
-     binding.pry
-   end
-
-   def index_url_hash #=> returns hash in the form of [index => URL]
-     hash = {}
-     count = 1
-     toilet_names.zip(toilet_url).map do |i|
-       hash[count] = i[1]
-       count +=1
-     end
-    # binding.pry
-     hash
-   end
-
-   def title_url_hash #=> returns hash in the form of [title => URL]
-     hash = {}
-     toilet_names.zip(toilet_url).map do |i|
-       hash[i[0]] = i[1]
-     end
-    #  binding.pry
-     hash
-   end
-
-   def index_title_hash #=> returns hash in the form of [index => title]
-     hash = {}
-     count = 1
-     toilet_url.zip(toilet_names).map do |i|
-       hash[count] = i[1]
-       count +=1
-     end
-    #  binding.pry
-     hash
-   end
-
-   def guess
-     puts "\nTo guess which throne you think is the most expensive, enter the # followed by a '?'\n\n"
-     puts "To find out more info on each throne, enter the # followed by a '!'\n\n"
-    guess_display
-    input = gets.strip
-    guess_check(input)
+      subproducts.each do |t|
+        GameOfThrones::Thrones.new(t.css("p.product-panel__summary.product-panel__summary-new").text, t.css("p.product-panel__price.product-panel__price-new.light-gray--sku--price").text.gsub("Starting at ","").strip, "https://www.us.kohler.com"+t.css("a").attr("href").value.gsub("s.jsp?productId=","/toilets/").gsub("?",".htm?"), count, self)
+        count += 1
+      end
     end
+   end
 
-   def guess_display #=> returns the list of toilets to choose from.
-     index_title_hash.each do |key, value|
-       puts "#{key}. #{value}."
+   def guess #=> Prompts user for selection
+     puts "\nGuess which throne you think is the most expensive by entering the corresponding index number."
+     puts "To find out more info on each throne, enter the index number followed by a '?'\n\n"
+    selection_generator #=> displays toilet table for user to make an decision over.
+    input_check #=> returns response based on if there is request for more details, a guess is made, or input is an error.
+  end
+
+   def selection_generator #=> returns the list of 3 random toilets to choose from.
+
+     self.toilets.sample(3).each do |toilet|
+       puts "   #{toilet.index}. #{toilet.name}"
+       @displayed_toilets << toilet #=> stores the generated selection in a dedicated array.
      end
   end
 
-  def guess_check(var) #=> checks the input/var against the list and returns correct/incorrect.
-    #if var == #the top price in the name_price_hash
-      if var.split("").last == "!"
-        GameOfThrones::SubCategories.new(url)
-        puts "you entered in #{var} with an exclamation point"
-      elsif var.split("").last == "?"
-        puts "you entered in #{var} with a question mark"
-      else
-        puts "you entered a typ - try again!"
-      guess
+  def input_check #=> routes the program to the appropriate method based on the var argument.
+    input = gets.strip
+    throne =   @displayed_toilets.detect { |toilet| toilet.index == (input.gsub("?","").to_i)}
+    a = @displayed_toilets.map {|i| i.index.to_s }.include? input.split(/[?]/).first
+    b = @displayed_toilets.map {|i| i.index.to_s.split("").last }.include? input.split("").last
+    c = (input.split("").last == "?")
+
+      if a && (b || c)
+         if input.split("").last == "?"
+           info_lookup(throne) #=> returns name, price, and url for the toilet.
+         else
+           game_check(throne) #=> compares the input 'var' against the @displayed_toilets to see if it was the most expensive.
+         end
+       elsif input == "exit"
+         puts "Thanks for playing!"
+      else #=> returns error message and prompts user to retry.
+        puts "you entered a typo - try again!"
+        input_check
       end
   end
 
+  def info_lookup(throne)
+    puts "\nCategory: #{throne.category.name}"
+    puts "Name: #{throne.name}"
+    puts "Price: #{throne.price}"
+    puts "Website: #{throne.url}\n\n"
+    input_check
+  end
+
+  def game_check(throne)
+    sorted = @displayed_toilets.map { |t|  t.price_i }.sort {|a,b| b <=> a }
+    if throne.price_i == sorted.first
+      puts "\nCongratulations!  You answered correctly."
+      play_again
+    else
+      puts "Wrong!  Try again."
+      input_check
+    end
+  end
 
 
+  def play_again
+    puts "Would you like to play again? y/n"
+    choice = gets.strip
+    if choice == "n"
+      puts "Thanks for playing and have a great day!"
+    elsif choice == "y"
+      @displayed_toilets = []
+      GameOfThrones::Controller.new.make_selection
+    else
+      puts "please type in 'y' or 'n' to make your selection."
+      play_again
+    end
+  end
 
-
-
-   def subpage
-     @subpage
-   end
-
-   def subcategories
-     @subcategories
-   end
-
-   def subcategory_list
-     @subhash = {}
-   end
 
 end

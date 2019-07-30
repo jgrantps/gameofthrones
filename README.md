@@ -1,34 +1,27 @@
 # GameOfThrones
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/Game_Of_Thrones`. To experiment with that code, run `bin/console` for an interactive prompt.
+Welcome to Game Of Thrones!  
 
-TODO: Delete this and the text above, and describe your gem
+This is a tongue-in-cheek CLI guessing game that uses toilets manufactured by - and published on the
+website of - Kohler International.
+
+After launching the program you will receive instructions and prompts for CLI navigation and gameplay.
+
+Remember: In the game of thrones, you either win, or you die! :p
+
+Good Luck!
 
 ## Installation
 
-Add this line to your application's Gemfile:
+clone or download the project from github at https://github.com/jgrantps/gameofthrones
 
-```ruby
-gem 'Game_Of_Thrones'
-```
+Once loaded on your machine, change directories to the senior parent directory of the program (/gameofthrones)
 
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install Game_Of_Thrones
+Run the following command line in your terminal to start the program: `./bin/game-of-thrones`
 
 ## Usage
 
-TODO: Write usage instructions here
-
-## Development
-
-After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+This program was built for educational purposes and is intended to be for light-hearted amusement only.  Please have fun with it until you are bored, the scrapers stop working, or you have memorized the MSRP of Kohler's complete toilet catalogue.
 
 ## Contributing
 
@@ -40,4 +33,4 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the GameOfThrones project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/'jgrantps'/Game_Of_Thrones/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the GameOfThrones project’s codebase is asked to be curtious and professional.  If anything related to the GameOfThrones project comes up that you think you may need assistance with, please contact Peter Grant at jgrantps@hotmail.com.
