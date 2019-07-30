@@ -51,7 +51,6 @@ class GameOfThrones::Categories
     a = @displayed_toilets.map {|i| i.index.to_s }.include? input.split(/[?]/).first #=> checks to confirm that the user input keystrokes preceeding a possible "?" keystroke matches any of the @displayed_toilets index numbers.
     b = @displayed_toilets.map {|i| i.index.to_s.split("").last }.include? input.split("").last #=> checks if provided user input doesn't contains the "?" as the last keystroke, implying a guess is made.
     c = (input.split("").last == "?") #=> checks if provided user input contains the "?" as the last keystroke, implying a request for more information.
-binding.pry
       if a && (b || c) # => equates to "if the user input number matches exactly any of the @displayed_toilets indexes, AND the user input either only ends with a question mark OR ends without a question mark"
          if input.split("").last == "?"
            info_lookup(throne) #=> returns name, price, and url for the toilet.
