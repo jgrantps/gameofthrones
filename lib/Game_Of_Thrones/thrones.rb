@@ -1,6 +1,8 @@
 class GameOfThrones::Thrones
+
   attr_accessor :name, :price, :url, :index, :category, :price_i
   @@all = []
+
   def initialize(name, price, url, index, category)
     @name = name
     @price = price
