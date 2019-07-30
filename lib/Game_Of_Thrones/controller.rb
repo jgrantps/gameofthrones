@@ -69,7 +69,7 @@ class GameOfThrones::Controller
    input_check #=> returns response based on if there is request for more details, a guess is made, or input is an error.
  end
 
-  def selection_generator(category) #=> returns the list of 3 random toilets to choose from.
+ def selection_generator(category) #=> returns the list of 3 random toilets to choose from.
     category.toilets.sample(3).each do |toilet|
       puts "   #{toilet.index}. #{toilet.name}"
       @displayed_toilets << toilet #=> temporarily stores the generated selection in a dedicated array.
@@ -129,8 +129,4 @@ class GameOfThrones::Controller
      play_again
    end
  end
-
-# ***************************
-
-
 end
