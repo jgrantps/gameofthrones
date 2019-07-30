@@ -25,6 +25,5 @@ end
   def continue
     puts "Press any key to continue..."
     input = gets.strip
-
   end
 end
