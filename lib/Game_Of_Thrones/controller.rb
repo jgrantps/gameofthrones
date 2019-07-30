@@ -29,7 +29,7 @@ class GameOfThrones::Controller
   end
 
   def make_selection
-    puts "Make a selection of which category you'd like to explore:\n\n"
+    puts "Make a selection of which category you would like to explore:\n\n"
   #=> puts out a list of all the categories.
     GameOfThrones::Categories.all[0..3].each do |category|
       puts "#{category.index}. #{category.name}"
@@ -44,6 +44,9 @@ class GameOfThrones::Controller
       category_check(category)
       # category.thrones_scraper
       # category.guess
+    elsif input == "exit"
+      puts "Thanks for playing!"
+      return nil
      else
       puts "\n******************\nYou have entered an error!  Please choose again. \n\n"
       make_selection

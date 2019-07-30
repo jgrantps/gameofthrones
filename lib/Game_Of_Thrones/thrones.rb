@@ -15,4 +15,5 @@ class GameOfThrones::Thrones
   def self.all
     @@all
   end
+
 end
