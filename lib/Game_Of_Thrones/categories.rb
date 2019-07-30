@@ -47,12 +47,12 @@ class GameOfThrones::Categories
 
   def input_check #=> routes the program to the appropriate method based on the var argument.
     input = gets.strip
-    throne =   @displayed_toilets.detect { |toilet| toilet.index == (input.gsub("?","").to_i)}
-    a = @displayed_toilets.map {|i| i.index.to_s }.include? input.split(/[?]/).first
-    b = @displayed_toilets.map {|i| i.index.to_s.split("").last }.include? input.split("").last
-    c = (input.split("").last == "?")
-
-      if a && (b || c)
+    throne =   @displayed_toilets.detect { |toilet| toilet.index == (input.gsub("?","").to_i)} #=> matches the toilet in the @displayed_toilets array to the user input.
+    a = @displayed_toilets.map {|i| i.index.to_s }.include? input.split(/[?]/).first #=> checks to confirm that the user input keystrokes preceeding a possible "?" keystroke matches any of the @displayed_toilets index numbers.
+    b = @displayed_toilets.map {|i| i.index.to_s.split("").last }.include? input.split("").last #=> checks if provided user input doesn't contains the "?" as the last keystroke, implying a guess is made.
+    c = (input.split("").last == "?") #=> checks if provided user input contains the "?" as the last keystroke, implying a request for more information.
+binding.pry
+      if a && (b || c) # => equates to "if the user input number matches exactly any of the @displayed_toilets indexes, AND the user input either only ends with a question mark OR ends without a question mark"
          if input.split("").last == "?"
            info_lookup(throne) #=> returns name, price, and url for the toilet.
          else
@@ -66,7 +66,7 @@ class GameOfThrones::Categories
       end
   end
 
-  def info_lookup(throne)
+  def info_lookup(throne) #=> displays scraped information about the selected toilet.
     puts "\nCategory: #{throne.category.name}"
     puts "Name: #{throne.name}"
     puts "Price: #{throne.price}"
@@ -74,9 +74,9 @@ class GameOfThrones::Categories
     input_check
   end
 
-  def game_check(throne)
-    sorted = @displayed_toilets.map { |t|  t.price_i }.sort {|a,b| b <=> a }
-    if throne.price_i == sorted.first
+  def game_check(throne) #=> checks to see if the user input was correct, incorrect.
+    sorted = @displayed_toilets.map { |t|  t.price_i }.sort {|a,b| b <=> a } #=> returns an array of the integer prices sorted from highest to lowest.
+    if throne.price_i == sorted.first #=> checks to see if the users selected toilet price matches the first item in the sorted array.
       puts "\nCongratulations!  You answered correctly."
       play_again
     else
