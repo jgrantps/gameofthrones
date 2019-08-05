@@ -9,20 +9,6 @@ class GameOfThrones::Controller
     make_selection #=> prompts the user to choose which category to play the round in.
   end
 
-
-  # def category_scraper #=> scrapes and returns title and URL for all toilet categories.
-  #   site = "https://www.us.kohler.com/us/toilets/article/CNT125900002.htm"
-  #   page = Nokogiri::HTML(open(site))
-  #   products = page.css("div.col-6-lg.col-6-md.col-12-sm.main-text-content")
-  #   if GameOfThrones::Categories.all == [] #=> scrapes only if the categories array has not yet been populated with scraped data.
-  #     count = 1
-  #     products.each do |t|
-  #      GameOfThrones::Categories.new(t.css("div.main-text-content h3").text, "https://www.us.kohler.com"+t.css("a").attr("href").value, count)
-  #      count += 1
-  #     end
-  #   end
-  # end
-
   def make_selection #=> prompts for and validates user entry for which category is to be used in the round.
     puts "Make a selection of which category you would like to explore:\n\n"
       GameOfThrones::Categories.all[0..3].each { |category| puts "#{category.index}. #{category.name}"} #=> puts out a list of the first 4 categories (the remaining categories are irrelevant)
@@ -48,19 +34,6 @@ class GameOfThrones::Controller
       guess(category)
     end
   end
-
-  # def thrones_scraper(category) #=> scrapes the category for its corresponding toilets.
-  #   subpage = Nokogiri::HTML(open(category.url))
-  #   subproducts = subpage.css("div.col-4-lg.col-6-md.col-6-sm.product-panel.product-panel-height-new")
-  #
-  #   count = 1
-  #   if category.toilets == []#=> instantiates individual toilets that belong to the category, if it hasn't been done already.
-  #    subproducts.each do |t|
-  #      GameOfThrones::Thrones.new(t.css("p.product-panel__summary.product-panel__summary-new").text, t.css("p.product-panel__price.product-panel__price-new.light-gray--sku--price").text.gsub("Starting at ","").strip, "https://www.us.kohler.com"+t.css("a").attr("href").value.gsub("s.jsp?productId=","/toilets/").gsub("?",".htm?"), count, category)
-  #      count += 1
-  #    end
-  #  end
-  # end
 
   def guess(category) #=> Prompts user for selection
     puts "\nGuess which throne you think is the most expensive by entering the corresponding index number."
