@@ -11,9 +11,15 @@ class GameOfThrones::Controller
 
   def make_selection #=> prompts for and validates user entry for which category is to be used in the round.
     puts "Make a selection of which category you would like to explore:\n\n"
-      GameOfThrones::Categories.all[0..3].each { |category| puts "#{category.index}. #{category.name}"} #=> puts out a list of the first 4 categories (the remaining categories are irrelevant)
+
+      selection_array = []
+      GameOfThrones::Categories.all[0..3].each do |category|  #=> puts out a list of the first 4 categories (the remaining categories are irrelevant)
+        puts "#{category.index}. #{category.name}"
+        selection_array << category.index.to_s
+      end
+
       input = gets.strip #=> receives chosen index number from user.
-       if ["1","2","3","4"].include? input #=> checks to confirm if the entry was valid.
+      if selection_array.include? input #=> checks to confirm if the entry was valid.
       category = GameOfThrones::Categories.all.detect {|category| category.index == input.to_i } #=> sets the category variable to the selected category of toilet for rest of the gameplay.
       puts "You have selected:\n  #{category.name}"
       category_check(category)
