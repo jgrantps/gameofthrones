@@ -12,17 +12,17 @@ class GameOfThrones::Controller
   def make_selection #=> prompts for and validates user entry for which category is to be used in the round.
     puts "Make a selection of which category you would like to explore:\n\n"
 
-      selection_array = []
+      valid_selection_array = []
       GameOfThrones::Categories.all[0..3].each do |category|  #=> puts out a list of the first 4 categories (the remaining categories are irrelevant)
         puts "#{category.index}. #{category.name}"
-        selection_array << category.index.to_s
+        valid_selection_array << category.index.to_s #=> loads the 4 category indexes into the valid_selection_array to be later used for user input validation.
       end
 
       input = gets.strip #=> receives chosen index number from user.
-      if selection_array.include? input #=> checks to confirm if the entry was valid.
-      category = GameOfThrones::Categories.all.detect {|category| category.index == input.to_i } #=> sets the category variable to the selected category of toilet for rest of the gameplay.
+     if valid_selection_array.include? input #=> checks to confirm if the entry was valid.
+      category = GameOfThrones::Categories.all.detect {|category| category.index == input.to_i } #=> sets the category variable to the selected category object for rest of the gameplay.
       puts "You have selected:\n  #{category.name}"
-      category_check(category)
+      scrape_thrones(category)
      elsif input == "exit"
       puts "Thanks for playing!"
       return nil
@@ -32,7 +32,7 @@ class GameOfThrones::Controller
      end
   end
 
-  def category_check(category) #=> scrapes for toilets if category's toilet attribute is empty.  Returns toilet attribute if not empty.
+  def scrape_thrones(category) #=> scrapes for toilets if category's toilet attribute is empty.  Returns toilet attribute if not empty.
     if category.toilets == []
       GameOfThrones::Scraper.new.thrones_scraper(category)
       guess(category)
@@ -44,6 +44,7 @@ class GameOfThrones::Controller
   def guess(category) #=> Prompts user for selection
     puts "\nGuess which throne you think is the most expensive by entering the corresponding index number."
     puts "To find out more info on each throne, enter the index number followed by a '?'\n\n"
+
     selection_generator(category) #=> displays toilet table for user to make a decision over.
     input_check #=> returns response based on if there is request for more details, a guess is made, or input is an error.
  end
@@ -57,10 +58,12 @@ class GameOfThrones::Controller
 
  def input_check #=> routes the program to the appropriate method based on the var argument.
    input = gets.strip
-   throne =   @displayed_toilets.detect { |toilet| toilet.index == (input.gsub("?","").to_i)} #=> matches the toilet in the @displayed_toilets array to the user input.
-   a = @displayed_toilets.map {|i| i.index.to_s }.include? input.split(/[?]/).first #=> checks to confirm that the user input keystrokes preceeding a possible "?" keystroke matches any of the @displayed_toilets index numbers.
-   b = @displayed_toilets.map {|i| i.index.to_s.split("").last }.include? input.split("").last #=> checks if provided user input doesn't contains the "?" as the last keystroke, implying a guess is made.
+
+   a = @displayed_toilets.map { |i| i.index.to_s }.include? input.split(/[?]/).first #=> checks to confirm that the user input keystrokes preceeding a possible "?" keystroke matches any of the @displayed_toilets index numbers.
+   b = @displayed_toilets.map { |i| i.index.to_s.split("").last }.include? input.split("").last #=> checks if provided user input doesn't contains the "?" as the last keystroke, implying a guess is made.
    c = (input.split("").last == "?") #=> checks if provided user input contains the "?" as the last keystroke, implying a request for more information.
+
+   throne = @displayed_toilets.detect { |toilet| toilet.index == (input.gsub("?","").to_i)} #=> matches the toilet in the @displayed_toilets array to the user input.
 
      if a && (b || c) # => equates to "if the user input number matches exactly any of the @displayed_toilets indexes, AND the user input either only ends with a question mark OR ends without a question mark"
         if input.split("").last == "?"
