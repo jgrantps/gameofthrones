@@ -1,6 +1,6 @@
 # GameOfThrones
 
-Welcome to Game Of Thrones!  This is the controller branch  
+Welcome to Game Of Thrones!
 
 This is a tongue-in-cheek CLI guessing game that uses toilets manufactured by - and published on the
 website of - Kohler International.
